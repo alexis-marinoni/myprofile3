@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<h4>I ABSOLUTELY DIDN'T CREATE THIS I JUST THOUGHT IT WAS FUNNY :)</h4>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+</style>
+</head>
+<body onload="startGame()">
+<script>
+
+var myGamePiece;
+var myObstacles = [];
+var myScore;
+
+function startGame() {
+    myGamePiece = new component(30, 30, "red", 10, 120);
+    myGamePiece.gravity = 0.05;
+    myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+    myGameArea.start();
+}
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = 480;
+        this.canvas.height = 270;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+        },
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
+
+function component(width, height, color, x, y, type) {
+    this.type = type;
+    this.score = 0;
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;    
+    this.x = x;
+    this.y = y;
+    this.gravity = 0;
+    this.gravitySpeed = 0;
+    this.update = function() {
+        ctx = myGameArea.context;
+        if (this.type == "text") {
+            ctx.font = this.width + " " + this.height;
+            ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);
+        } else {
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+    this.newPos = function() {
+        this.gravitySpeed += this.gravity;
+        this.x += this.speedX;
+        this.y += this.speedY + this.gravitySpeed;
+        this.hitBottom();
+    }
+    this.hitBottom = function() {
+        var rockbottom = myGameArea.canvas.height - this.height;
+        if (this.y > rockbottom) {
+            this.y = rockbottom;
+            this.gravitySpeed = 0;
+        }
+    }
+    this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
+        }
+        return crash;
+    }
+}
+
+function updateGameArea() {
+    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+    for (i = 0; i < myObstacles.length; i += 1) {
+        if (myGamePiece.crashWith(myObstacles[i])) {
+            return;
+        } 
+    }
+    myGameArea.clear();
+    myGameArea.frameNo += 1;
+    if (myGameArea.frameNo == 1 || everyinterval(150)) {
+        x = myGameArea.canvas.width;
+        minHeight = 20;
+        maxHeight = 200;
+        height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+        minGap = 50;
+        maxGap = 200;
+        gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+        myObstacles.push(new component(10, height, "green", x, 0));
+        myObstacles.push(new component(10, x - height - gap, "green", x, height + gap));
+    }
+    for (i = 0; i < myObstacles.length; i += 1) {
+        myObstacles[i].x += -1;
+        myObstacles[i].update();
+    }
+    myScore.text="SCORE: " + myGameArea.frameNo;
+    myScore.update();
+    myGamePiece.newPos();
+    myGamePiece.update();
+}
+
+function everyinterval(n) {
+    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+    return false;
+}
+
+function accelerate(n) {
+    myGamePiece.gravity = n;
+}
+</script>
+<br>
+<button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button>
+<p>Use the ACCELERATE button to stay in the air</p>
+<p>How long can you stay alive?</p>
+    <head>
+        <script src="https://kit.fontawesome.com/e7c719b153.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="style.css">
+        <title> Alexis profile </title>
+        <meta content ="description">
+        <meta charset="UTF-8">
+    </head>
+<div class="container">
+    <body>
+        <h1> Hello, my name is Alexis </h1>
+        <img src="image1.jpg" width="200" height="250" alt=" a picture of alexis">
+        <img src="image2.jpg" width="200" height="250" alt=" a pic of alexis" style="float:centre"/> 
+        <img src="image3.jpg" width="200" height="250" alt=" a pic of alexis" style="float:centre"/> 
+        <p> 
+</div class="container">
+
+<div class="container">
+    <img src="gif1.gif"/>
+</div class="container">
+    <br>
+<div class="container">
+            I love to run, <strong>windsurf</strong> and <strong>ski</strong>.
+        </p>
+        <a href="https://agar.io/" target="_blank">
+            Click here if you are bored reading my profile :)
+        </a>
+</div class="container">
+<div class="container">
+        <h2>More about me ! </h2>
+        <p>I live in <strong> Switzerland</strong> around <strong>Geneva</strong> !</p>
+        <h3>FOLLOW ME ON SOCIAL MEDIA :)</h3>
+</div class="container">
+        <ul>
+            <li>
+                <button> <a href="https://www.facebook.com/alexis.marinoni.9" target="_blank"><i class="fab fa-facebook"></i></a> </button>
+                <button> <a href="https://www.instagram.com/alex_marinoni/?hl=fr" target="_blank"><i class="fab fa-instagram"></i></a> </button>
+                <button> <a href="https://www.linkedin.com/in/alexis-marinoni-a35430224/" target="_blank"><i class="fab fa-linkedin"></i></a> </button>
+            </li>
+        </ul>
+    </body>
+</html>
